@@ -31,25 +31,25 @@ const MovieCard = ({ data }) => {
           <p>
             {data.type == "Movie" ? "فیلم" : "سریال"} - {previw?.year}
           </p>
-          {previw.hit && (
+          {previw?.hit && (
             <p className="flex align-items-center">
               <HeartIcon />
               {previw.hit}%
             </p>
           )}
-          {previw.imdb && (
+          {previw?.imdb && (
             <p className="flex align-items-center">
               <IMDBIcon />
               {previw.imdb}
             </p>
           )}
-          {previw.dubsType != "None" && (
+          {previw?.dubsType != "None" && (
             <p className="flex align-items-center">
               <MicIcon />
               دوبله نماوا
             </p>
           )}
-          {previw.hasPersianSubtitle && (
+          {previw?.hasPersianSubtitle && (
             <p className="flex align-items-center">
               <TextIcon />
               زیرنویس

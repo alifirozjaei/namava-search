@@ -4,10 +4,11 @@ import SideBar from "./components/SideBar/SideBar.jsx";
 import SearchIcon from "./components/Icons/SearchIcon.jsx";
 import CloseIcon from "./components/Icons/CloseIcon.jsx";
 import MovieCard from "./components/MovieCard/MovieCard.jsx";
+import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 
 const BASE_URL = "https://www.namava.ir/api/v3.0/search/advance";
-const moviesInitialValue = { total: 0, page: 1, items: [] };
+const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
   const [query, setQuery] = useState("");
@@ -32,10 +33,7 @@ const App = () => {
       });
 
       if (data.succeeded) {
-        result = {
-          ...data.result.result_items[0].groups.Media,
-          page: data.result.page,
-        };
+        result = data.result.result_items[0].groups.Media;
       }
     } catch (error) {
       console.log(error);
@@ -60,35 +58,15 @@ const App = () => {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // load more data after scroll
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      const scrollTop = document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight;
-      const clientHeight = document.documentElement.clientHeight;
-
-      console.log(scrollTop, scrollHeight, clientHeight);
-      if (scrollTop + clientHeight >= scrollHeight - 100 && !isLoad) {
-        if (movies.total > movies.items.length) {
-          fetchData("all", Math.ceil(movies.items.length / 20) + 1, query).then(
-            (data) => {
-              setMovies((prev) => {
-                if (prev.page < data.page) {
-                  return {
-                    total: data.total,
-                    items: [...prev.items, ...data.items],
-                    page: data.page,
-                  };
-                } else {
-                  return prev;
-                }
-              });
-            }
-          );
-        }
-      }
-    });
-  }, [movies]);
+  const fetchMoreData = () => {
+    console.log("fetch more");
+    fetchData("all", movies.items.length / 20 + 1, query).then((data) =>
+      setMovies((prev) => ({
+        total: prev.total,
+        items: [...prev.items, ...data.items],
+      }))
+    );
+  };
 
   return (
     <div className="container">
@@ -115,12 +93,21 @@ const App = () => {
           </div>
 
           {/* Show Search Result */}
-          <div className="grid-3 grid-lg-5">
-            {!!movies?.total &&
-              movies.items.map((movie) => (
-                <MovieCard key={movie.id} data={movie} />
-              ))}
-          </div>
+          <InfiniteScroll
+            dataLength={movies.items.length}
+            next={fetchMoreData}
+            onScroll={() => console.log("scroll")}
+            hasMore={movies.total != movies.items.length}
+          >
+            <div className="grid-3 grid-lg-5">
+              {!!movies?.total &&
+                movies.items.map((movie) => (
+                  <MovieCard key={movie.id} data={movie} />
+                ))}
+            </div>
+          </InfiniteScroll>
+
+          
         </div>
       </div>
     </div>
