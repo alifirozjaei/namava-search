@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Vazir";
+  src: url("../assets/fonts/vazir.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -8,4 +13,9 @@
 a {
   text-decoration: none;
   color: inherit;
+}
+
+body {
+  font-family: "Vazir";
+  background-color:rgba(18,18,18,1)
 }

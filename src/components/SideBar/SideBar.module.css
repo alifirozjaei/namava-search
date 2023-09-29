@@ -1,0 +1,9 @@
+.sidebar {
+  max-width: 280px;
+  min-width: 280px;
+  padding: 24px;
+  background-color: #37383e;
+  border-radius: 5px;
+  position: fixed;
+}
+
