@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./SideBar.module.css";
 import CheckBox from "../CheckBox/CheckBox.jsx";
 
-const SideBar = () => {
+const SideBar = ({ onTypeMoviesChange, onTypeSeriesChange }) => {
   return (
     <div className={styles.sidebar}>
       <div
@@ -13,8 +13,12 @@ const SideBar = () => {
         <button className="btn color-info">حذف همه</button>
       </div>
       <div className="flex">
-        <CheckBox id="film">فیلم</CheckBox>
-        <CheckBox id="series">سریال</CheckBox>
+        <CheckBox onChange={onTypeMoviesChange} id="film">
+          فیلم
+        </CheckBox>
+        <CheckBox onChange={onTypeSeriesChange} id="series">
+          سریال
+        </CheckBox>
       </div>
     </div>
   );

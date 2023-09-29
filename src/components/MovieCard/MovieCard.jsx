@@ -29,7 +29,7 @@ const MovieCard = ({ data }) => {
         <img src={data.image_url} />
         <div className={styles["card-overlay"]}>
           <p>
-            {data.type == "Movie" ? "فیلم" : "سریال"} - {previw?.year}
+            {data.type.includes("Movie") ? "فیلم" : "سریال"} - {previw?.year}
           </p>
           {previw?.hit && (
             <p className="flex align-items-center">

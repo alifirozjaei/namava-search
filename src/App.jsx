@@ -13,16 +13,34 @@ const moviesInitialValue = { total: 0, items: [] };
 const App = () => {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState(moviesInitialValue);
-  const [isLoad, setIsLoad] = useState(false);
+  const [typeMovie, setTypeMovie] = useState(false);
+  const [typeSeries, setTypeSeries] = useState(false);
 
   const searchHandler = (e) => {
     setQuery(e.target.value);
   };
 
+  const typeMoviesChangeHandler = (checked) => {
+    setTypeMovie(checked);
+  };
+
+  const typeSeriesChangeHandler = (checked) => {
+    setTypeSeries(checked);
+  };
+
+  const getType = () => {
+    if (typeMovie && !typeSeries) {
+      return "movie";
+    } else if (!typeMovie && typeSeries) {
+      return "series";
+    } else {
+      return "all";
+    }
+  };
+
   const fetchData = async (movieType, pageNumber, searchQuery) => {
     let result = moviesInitialValue;
     try {
-      setIsLoad(true);
       const { data } = await axios.get(BASE_URL, {
         params: {
           type: movieType,
@@ -39,7 +57,6 @@ const App = () => {
       console.log(error);
       result = moviesInitialValue;
     } finally {
-      setIsLoad(false);
       return result;
     }
   };
@@ -48,7 +65,7 @@ const App = () => {
   useEffect(() => {
     const timer = setTimeout(async () => {
       if (query) {
-        const data = await fetchData("all", 1, query);
+        const data = await fetchData(getType(), 1, query);
         setMovies(data);
       } else {
         setMovies(moviesInitialValue);
@@ -56,11 +73,11 @@ const App = () => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, typeMovie, typeSeries]);
 
   const fetchMoreData = () => {
-    console.log("fetch more");
-    fetchData("all", movies.items.length / 20 + 1, query).then((data) =>
+    // console.log("fetch more");
+    fetchData(getType(), movies.items.length / 20 + 1, query).then((data) =>
       setMovies((prev) => ({
         total: prev.total,
         items: [...prev.items, ...data.items],
@@ -72,7 +89,10 @@ const App = () => {
     <div className="container">
       <div className="main">
         {/* SideBar & Filter */}
-        <SideBar />
+        <SideBar
+          onTypeMoviesChange={typeMoviesChangeHandler}
+          onTypeSeriesChange={typeSeriesChangeHandler}
+        />
 
         <div className="search-container">
           {/* Search From */}
@@ -96,7 +116,7 @@ const App = () => {
           <InfiniteScroll
             dataLength={movies.items.length}
             next={fetchMoreData}
-            onScroll={() => console.log("scroll")}
+            // onScroll={() => console.log("scroll")}
             hasMore={movies.total != movies.items.length}
           >
             <div className="grid-3 grid-lg-5">
@@ -106,8 +126,6 @@ const App = () => {
                 ))}
             </div>
           </InfiniteScroll>
-
-          
         </div>
       </div>
     </div>
