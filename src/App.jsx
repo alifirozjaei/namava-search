@@ -105,16 +105,18 @@ const App = () => {
               <SearchIcon className="search-icon" />
               <input
                 type="text"
-                placeholder="فیلم و سریال"
+                placeholder="فیلم، سریال، بازیگر و ژانر"
                 onChange={searchHandler}
                 value={query}
               />
-              <span
-                className="btn flex align-items-center"
-                onClick={() => setQuery("")}
-              >
-                <CloseIcon />
-              </span>
+              {query && (
+                <span
+                  className="btn flex align-items-center"
+                  onClick={() => setQuery("")}
+                >
+                  <CloseIcon />
+                </span>
+              )}
             </div>
 
             {/* Show Search Result */}
