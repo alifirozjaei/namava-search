@@ -1,6 +1,6 @@
 .sidebar {
-  max-width: 280px;
-  min-width: 280px;
+  max-width: 307px;
+  min-width: 307px;
   padding: 24px;
   background-color: #37383e;
   border-radius: 5px;
@@ -9,3 +9,13 @@
   top: 104px;
 }
 
+.sidebar-item {
+  display: flex;
+  border-bottom: 1px solid #aaa;
+  padding: 16px 0;
+  font-size: 14px;
+}
+
+.sidebar-item:last-child {
+  border-bottom: none;
+}

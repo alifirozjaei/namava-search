@@ -31,6 +31,11 @@ const App = () => {
     setTypeSeries(checked);
   };
 
+  const onClearHandler = () => {
+    setTypeMovie(false);
+    setTypeSeries(false);
+  };
+
   const getType = () => {
     if (typeMovie && !typeSeries) {
       return "movie";
@@ -97,6 +102,9 @@ const App = () => {
           <SideBar
             onTypeMoviesChange={typeMoviesChangeHandler}
             onTypeSeriesChange={typeSeriesChangeHandler}
+            movie={typeMovie}
+            series={typeSeries}
+            onClear={onClearHandler}
           />
 
           <div className="search-container">
