@@ -1,9 +1,13 @@
 input {
-  font-family: "Vazir";
+  font-family: iranyekan;
 }
 
 .flex {
   display: flex;
+}
+
+.flex-column{
+  flex-direction: column;
 }
 
 .justify-content-between {
