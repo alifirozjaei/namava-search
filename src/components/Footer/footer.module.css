@@ -21,7 +21,11 @@
   text-decoration: none;
   list-style: none;
   color: #cccccc;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
+  transition: all ease 0.1s;
 }
 
+.footer ul li:hover {
+  color: #fff;
+}
