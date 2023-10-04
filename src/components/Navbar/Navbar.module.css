@@ -5,6 +5,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background-color: rgba(18, 18, 18, 1);
+  transition: all ease 0.3s;
+  z-index: 100;
 }
 
 .navbar-link {
