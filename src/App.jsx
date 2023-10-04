@@ -9,12 +9,19 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import EmptyResult from "./components/EmptyResult/EmptyResult.jsx";
+import NotFound from "./components/NotFound/NotFound.jsx";
 
 const BASE_URL = "https://www.namava.ir/api/v3.0/search/advance";
 const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => {
+    if (localStorage.getItem("query") == null) {
+      return "";
+    } else {
+      return localStorage.getItem("query");
+    }
+  });
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
   const [typeSeries, setTypeSeries] = useState(false);
@@ -78,6 +85,7 @@ const App = () => {
       } else {
         setMovies(moviesInitialValue);
       }
+      localStorage.setItem("query", query);
     }, 500);
 
     return () => clearTimeout(timer);
@@ -142,7 +150,8 @@ const App = () => {
               </div>
             </InfiniteScroll>
 
-            {!movies?.total && <EmptyResult />}
+            {!movies?.total && !query && <EmptyResult />}
+            {!movies?.total && !!query && <NotFound />}
           </div>
         </div>
       </div>

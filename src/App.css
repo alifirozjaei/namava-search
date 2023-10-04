@@ -59,6 +59,7 @@ input {
   display: flex;
   border-radius: 5px;
   align-items: center;
+  height: 60px;
 }
 
 .search-box input {
@@ -94,4 +95,3 @@ input {
     grid-template-columns: repeat(5, 20%);
   }
 }
-
