@@ -43,7 +43,7 @@ input {
 
 .main {
   display: flex;
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0px auto;
 }
 
@@ -93,5 +93,17 @@ input {
   .grid-lg-5 {
     display: grid;
     grid-template-columns: repeat(5, 20%);
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .grid-xlg-7 {
+    display: grid;
+    grid-template-columns: repeat(7, 14.28%);
+  }
+
+  .main .search-box {
+    width: 50%;
+    margin: 0 auto;
   }
 }

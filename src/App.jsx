@@ -142,7 +142,7 @@ const App = () => {
               // onScroll={() => console.log("scroll")}
               hasMore={movies.total != movies.items.length}
             >
-              <div className="grid-3 grid-lg-5">
+              <div className="grid-3 grid-lg-5 grid-xlg-7">
                 {!!movies?.total &&
                   movies.items.map((movie) => (
                     <MovieCard key={movie.id} data={movie} />
