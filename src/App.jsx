@@ -1,5 +1,4 @@
 import "./App.css";
-import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import SideBar from "./components/SideBar/SideBar.jsx";
 import SearchIcon from "./components/Icons/SearchIcon.jsx";
@@ -12,14 +11,14 @@ import EmptyResult from "./components/EmptyResult/EmptyResult.jsx";
 import NotFound from "./components/NotFound/NotFound.jsx";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "use-debounce";
+import fetchData from "./services/fetchData";
 
-const BASE_URL = "https://www.namava.ir/api/v3.0/search/advance";
 const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
   const [query, setQuery] = useState("");
   const [debouncedQuery] = useDebounce(query, 500);
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
   const [typeSeries, setTypeSeries] = useState(false);
@@ -57,34 +56,17 @@ const App = () => {
     }
   };
 
-  const fetchData = async (movieType, pageNumber, searchQuery) => {
-    let result = moviesInitialValue;
-    try {
-      const { data } = await axios.get(BASE_URL, {
-        params: {
-          type: movieType,
-          count: 20,
-          page: pageNumber,
-          query: searchQuery,
-        },
-      });
-
-      if (data.succeeded) {
-        result = data.result.result_items[0].groups.Media;
-      }
-    } catch (error) {
-      console.log(error);
-      result = moviesInitialValue;
-    } finally {
-      return result;
-    }
-  };
 
   // load first page after search
   useEffect(() => {
     (async () => {
       if (debouncedQuery) {
-        const data = await fetchData(getType(), 1, debouncedQuery);
+        const data = await fetchData(
+          moviesInitialValue,
+          getType(),
+          1,
+          debouncedQuery
+        );
         setMovies(data);
       } else {
         setMovies(moviesInitialValue);
@@ -95,7 +77,12 @@ const App = () => {
 
   const fetchMoreData = () => {
     // console.log("fetch more");
-    fetchData(getType(), movies.items.length / 20 + 1, query).then((data) =>
+    fetchData(
+      moviesInitialValue,
+      getType(),
+      movies.items.length / 20 + 1,
+      query
+    ).then((data) =>
       setMovies((prev) => ({
         total: prev.total,
         items: [...prev.items, ...data.items],

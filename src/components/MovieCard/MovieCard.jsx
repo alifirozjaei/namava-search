@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./MovieCard.module.css";
 import HeartIcon from "../Icons/HeartIcon.jsx";
 import IMDBIcon from "../Icons/IMDBIcon.jsx";
 import MicIcon from "../Icons/MicIcon.jsx";
 import TextIcon from "../Icons/TextIcon.jsx";
-import axios from "axios";
+import fetchMovieDetail from "../../services/fetchMovieDetail";
 
 const MovieCard = ({ data }) => {
   const [previw, setPreview] = useState({
@@ -16,18 +16,15 @@ const MovieCard = ({ data }) => {
     dubsType: null,
   });
 
-  const fetchMovieDetail = () => {
+  const fetchData = () => {
     if (previw.id == null) {
-      axios
-        .get(`https://www.namava.ir/api/v1.0/medias/${data.id}/brief-preview`)
-        .then(({ data }) => setPreview(data.result))
-        .catch((error) => console.log(error));
+      fetchMovieDetail(data.id).then((data) => setPreview(data));
     }
   };
 
   return (
     <div className={styles.card}>
-      <div className={styles["card-content"]} onMouseEnter={fetchMovieDetail}>
+      <div className={styles["card-content"]} onMouseEnter={fetchData}>
         <img src={data.image_url} />
         <div className={styles["card-overlay"]}>
           <p>
