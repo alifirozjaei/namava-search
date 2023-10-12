@@ -25,7 +25,7 @@ const App = () => {
   const [typeSeries, setTypeSeries] = useState(false);
 
   useEffect(() => {
-    setQuery(searchParams.get("query"));
+    setQuery(searchParams.get("query") ? searchParams.get("query") : "");
     setTypeMovie(searchParams.get("type") == "movie");
     setTypeSeries(searchParams.get("type") == "searies");
   }, []);
