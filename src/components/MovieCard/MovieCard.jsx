@@ -16,16 +16,18 @@ const MovieCard = ({ data }) => {
     dubsType: null,
   });
 
-  useEffect(() => {
-    axios
-      .get(`https://www.namava.ir/api/v1.0/medias/${data.id}/brief-preview`)
-      .then(({ data }) => setPreview(data.result))
-      .catch((error) => console.log(error));
-  }, []);
+  const fetchMovieDetail = () => {
+    if (previw.id == null) {
+      axios
+        .get(`https://www.namava.ir/api/v1.0/medias/${data.id}/brief-preview`)
+        .then(({ data }) => setPreview(data.result))
+        .catch((error) => console.log(error));
+    }
+  };
 
   return (
     <div className={styles.card}>
-      <div className={styles["card-content"]}>
+      <div className={styles["card-content"]} onMouseEnter={fetchMovieDetail}>
         <img src={data.image_url} />
         <div className={styles["card-overlay"]}>
           <p>
