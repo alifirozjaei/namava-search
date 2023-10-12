@@ -10,21 +10,23 @@ import Navbar from "./components/Navbar/Navbar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import EmptyResult from "./components/EmptyResult/EmptyResult.jsx";
 import NotFound from "./components/NotFound/NotFound.jsx";
+import { useSearchParams } from "react-router-dom";
 
 const BASE_URL = "https://www.namava.ir/api/v3.0/search/advance";
 const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
-  const [query, setQuery] = useState(() => {
-    if (localStorage.getItem("query") == null) {
-      return "";
-    } else {
-      return localStorage.getItem("query");
-    }
-  });
+  const [query, setQuery] = useState("");
+  let [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
   const [typeSeries, setTypeSeries] = useState(false);
+
+  useEffect(() => {
+    setQuery(searchParams.get("query"));
+    setTypeMovie(searchParams.get("type") == "movie");
+    setTypeSeries(searchParams.get("type") == "searies");
+  }, []);
 
   const searchHandler = (e) => {
     setQuery(e.target.value);
@@ -85,7 +87,7 @@ const App = () => {
       } else {
         setMovies(moviesInitialValue);
       }
-      localStorage.setItem("query", query);
+      setSearchParams({ query: query, type: getType() });
     }, 500);
 
     return () => clearTimeout(timer);
