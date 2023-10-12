@@ -11,12 +11,14 @@ import Footer from "./components/Footer/Footer.jsx";
 import EmptyResult from "./components/EmptyResult/EmptyResult.jsx";
 import NotFound from "./components/NotFound/NotFound.jsx";
 import { useSearchParams } from "react-router-dom";
+import { useDebounce } from "use-debounce";
 
 const BASE_URL = "https://www.namava.ir/api/v3.0/search/advance";
 const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
   const [query, setQuery] = useState("");
+  const [debouncedQuery] = useDebounce(query, 500);
   let [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
@@ -80,18 +82,16 @@ const App = () => {
 
   // load first page after search
   useEffect(() => {
-    const timer = setTimeout(async () => {
-      if (query) {
-        const data = await fetchData(getType(), 1, query);
+    (async () => {
+      if (debouncedQuery) {
+        const data = await fetchData(getType(), 1, debouncedQuery);
         setMovies(data);
       } else {
         setMovies(moviesInitialValue);
       }
-      setSearchParams({ query: query, type: getType() });
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [query, typeMovie, typeSeries]);
+      setSearchParams({ query: debouncedQuery, type: getType() });
+    })();
+  }, [debouncedQuery, typeMovie, typeSeries]);
 
   const fetchMoreData = () => {
     // console.log("fetch more");
