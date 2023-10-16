@@ -16,6 +16,8 @@ const MovieCard = ({ data }) => {
     dubsType: null,
   });
 
+  const [loaded, setLoaded] = useState(false);
+
   let hoverTimer;
 
   const fetchData = () => {
@@ -39,7 +41,23 @@ const MovieCard = ({ data }) => {
         onMouseEnter={mouseEnterHandler}
         onMouseLeave={mouseLeaveHandler}
       >
-        <img src={data.image_url} />
+        <img
+          src={data.image_url}
+          style={loaded ? {} : { display: "none" }}
+          onLoad={() => {
+            setLoaded(true);
+          }}
+        />
+        {!loaded && (
+          <div
+            style={{
+              width: "100%",
+              height: "300px",
+              borderRadius: "5px",
+              backgroundColor: "#37383e",
+            }}
+          ></div>
+        )}
         <div className={styles["card-overlay"]}>
           <p>
             {data.type.includes("Movie") ? "فیلم" : "سریال"} - {previw?.year}
