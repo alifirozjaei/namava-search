@@ -25,7 +25,7 @@ const App = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setQuery(" " && searchParams.get("query"));
+    setQuery(searchParams.get("query") || "");
     setTypeMovie(searchParams.get("type") == "movie");
     setTypeSeries(searchParams.get("type") == "searies");
   }, []);
