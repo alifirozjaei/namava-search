@@ -1,0 +1,109 @@
+input {
+  font-family: iranyekan;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.font-size-16 {
+  font-size: 16px;
+}
+
+.btn {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-family: "Vazir";
+}
+
+.color-info {
+  color: #6eb8ff;
+}
+
+.container {
+  background-color: rgba(18, 18, 18, 1);
+  min-height: 100vh;
+  color: white;
+  padding: 0 42px;
+  margin-top: 104px;
+}
+
+.main {
+  display: flex;
+  /* max-width: 1400px; */
+  margin: 0px auto;
+}
+
+.main .search-container {
+  flex-grow: 1;
+  margin-right: 340px;
+  height: 60px;
+}
+
+.main .search-box {
+  background-color: #37383e;
+  padding: 16px;
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  height: 60px;
+}
+
+.search-box input {
+  display: block;
+  height: 28px;
+  flex-grow: 1;
+  background-color: inherit;
+  outline: none;
+  border: none;
+  caret-color: #ccc;
+  color: #eee;
+  font-size: 12px;
+}
+
+.search-box input::placeholder {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.search-icon {
+  color: #eee;
+  margin-left: 5px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+}
+
+@media screen and (min-width: 1280px) {
+  .grid-lg-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .grid-xlg-7 {
+    display: grid;
+    grid-template-columns: repeat(7, 14.28%);
+  }
+
+  .main .search-box {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
