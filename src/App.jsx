@@ -25,7 +25,7 @@ const App = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setQuery(searchParams.get("query") ? searchParams.get("query") : "");
+    setQuery(" " && searchParams.get("query"));
     setTypeMovie(searchParams.get("type") == "movie");
     setTypeSeries(searchParams.get("type") == "searies");
   }, []);
@@ -81,6 +81,11 @@ const App = () => {
       setSearchParams(urlParams);
     })();
   }, [debouncedQuery, typeMovie, typeSeries]);
+
+  // when filter change scroll to top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [typeMovie, typeSeries]);
 
   const fetchMoreData = () => {
     if (Math.ceil(movies.items.length / 20) + 1 < page) {
