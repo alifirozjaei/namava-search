@@ -22,6 +22,7 @@ const App = () => {
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
   const [typeSeries, setTypeSeries] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     setQuery(searchParams.get("query") ? searchParams.get("query") : "");
@@ -69,6 +70,7 @@ const App = () => {
           debouncedQuery
         );
         setMovies(data);
+        setPage(Math.ceil(data.total / 20) + 1);
       } else {
         setMovies(moviesInitialValue);
       }
@@ -81,18 +83,19 @@ const App = () => {
   }, [debouncedQuery, typeMovie, typeSeries]);
 
   const fetchMoreData = () => {
-    // console.log("fetch more");
-    fetchData(
-      moviesInitialValue,
-      getType(),
-      movies.items.length / 20 + 1,
-      query
-    ).then((data) =>
-      setMovies((prev) => ({
-        total: prev.total,
-        items: [...prev.items, ...data.items],
-      }))
-    );
+    if (Math.ceil(movies.items.length / 20) + 1 < page) {
+      fetchData(
+        moviesInitialValue,
+        getType(),
+        Math.ceil(movies.items.length / 20) + 1,
+        query
+      ).then((data) =>
+        setMovies((prev) => ({
+          total: prev.total,
+          items: [...prev.items, ...data.items],
+        }))
+      );
+    }
   };
 
   return (
