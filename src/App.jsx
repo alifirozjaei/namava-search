@@ -17,7 +17,7 @@ const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
   const [query, setQuery] = useState("");
-  const [debouncedQuery] = useDebounce(query, 500);
+  const [debouncedQuery] = useDebounce(query, 1000);
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
@@ -56,11 +56,12 @@ const App = () => {
     }
   };
 
-
   // load first page after search
   useEffect(() => {
     (async () => {
+      let urlParams = {};
       if (debouncedQuery) {
+        urlParams["query"] = debouncedQuery;
         const data = await fetchData(
           moviesInitialValue,
           getType(),
@@ -71,7 +72,11 @@ const App = () => {
       } else {
         setMovies(moviesInitialValue);
       }
-      setSearchParams({ query: debouncedQuery, type: getType() });
+
+      if (getType() != "all") {
+        urlParams["type"] = getType();
+      }
+      setSearchParams(urlParams);
     })();
   }, [debouncedQuery, typeMovie, typeSeries]);
 
