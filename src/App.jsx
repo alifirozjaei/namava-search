@@ -17,14 +17,15 @@ const moviesInitialValue = { total: 0, items: [] };
 
 const App = () => {
   const [query, setQuery] = useState("");
-  const [debouncedQuery] = useDebounce(query, 500);
+  const [debouncedQuery] = useDebounce(query, 1000);
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState(moviesInitialValue);
   const [typeMovie, setTypeMovie] = useState(false);
   const [typeSeries, setTypeSeries] = useState(false);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
-    setQuery(searchParams.get("query") ? searchParams.get("query") : "");
+    setQuery(searchParams.get("query") || "");
     setTypeMovie(searchParams.get("type") == "movie");
     setTypeSeries(searchParams.get("type") == "searies");
   }, []);
@@ -56,11 +57,12 @@ const App = () => {
     }
   };
 
-
   // load first page after search
   useEffect(() => {
     (async () => {
+      let urlParams = {};
       if (debouncedQuery) {
+        urlParams["query"] = debouncedQuery;
         const data = await fetchData(
           moviesInitialValue,
           getType(),
@@ -68,26 +70,37 @@ const App = () => {
           debouncedQuery
         );
         setMovies(data);
+        setPage(Math.ceil(data.total / 20) + 1);
       } else {
         setMovies(moviesInitialValue);
       }
-      setSearchParams({ query: debouncedQuery, type: getType() });
+
+      if (getType() != "all") {
+        urlParams["type"] = getType();
+      }
+      setSearchParams(urlParams);
     })();
   }, [debouncedQuery, typeMovie, typeSeries]);
 
+  // when filter change scroll to top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [typeMovie, typeSeries]);
+
   const fetchMoreData = () => {
-    // console.log("fetch more");
-    fetchData(
-      moviesInitialValue,
-      getType(),
-      movies.items.length / 20 + 1,
-      query
-    ).then((data) =>
-      setMovies((prev) => ({
-        total: prev.total,
-        items: [...prev.items, ...data.items],
-      }))
-    );
+    if (Math.ceil(movies.items.length / 20) + 1 < page) {
+      fetchData(
+        moviesInitialValue,
+        getType(),
+        Math.ceil(movies.items.length / 20) + 1,
+        query
+      ).then((data) =>
+        setMovies((prev) => ({
+          total: prev.total,
+          items: [...prev.items, ...data.items],
+        }))
+      );
+    }
   };
 
   return (

@@ -16,16 +16,48 @@ const MovieCard = ({ data }) => {
     dubsType: null,
   });
 
+  const [loaded, setLoaded] = useState(false);
+
+  let hoverTimer;
+
   const fetchData = () => {
     if (previw.id == null) {
       fetchMovieDetail(data.id).then((data) => setPreview(data));
     }
   };
 
+  const mouseEnterHandler = () => {
+    hoverTimer = setTimeout(fetchData, 300);
+  };
+
+  const mouseLeaveHandler = () => {
+    clearTimeout(hoverTimer);
+  };
+
   return (
     <div className={styles.card}>
-      <div className={styles["card-content"]} onMouseEnter={fetchData}>
-        <img src={data.image_url} />
+      <div
+        className={styles["card-content"]}
+        onMouseEnter={mouseEnterHandler}
+        onMouseLeave={mouseLeaveHandler}
+      >
+        <img
+          src={data.image_url}
+          style={loaded ? {} : { display: "none" }}
+          onLoad={() => {
+            setLoaded(true);
+          }}
+        />
+        {!loaded && (
+          <div
+            style={{
+              width: "100%",
+              height: "300px",
+              borderRadius: "5px",
+              backgroundColor: "#37383e",
+            }}
+          ></div>
+        )}
         <div className={styles["card-overlay"]}>
           <p>
             {data.type.includes("Movie") ? "فیلم" : "سریال"} - {previw?.year}
