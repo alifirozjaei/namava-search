@@ -48,17 +48,12 @@ const MovieCard = ({ data }) => {
             setLoaded(true);
           }}
         />
-        {!loaded && (
-          <div
-            style={{
-              width: "100%",
-              height: "300px",
-              borderRadius: "5px",
-              backgroundColor: "#37383e",
-            }}
-          ></div>
-        )}
-        <div className={styles["card-overlay"]}>
+        {!loaded && <div className={styles["image-placeholder"]}></div>}
+
+        <div
+          className={styles["card-overlay"]}
+          style={previw.id ? {} : { opacity: "0" }}
+        >
           <p>
             {data.type.includes("Movie") ? "فیلم" : "سریال"} - {previw?.year}
           </p>
