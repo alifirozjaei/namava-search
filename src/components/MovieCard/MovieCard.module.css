@@ -4,12 +4,15 @@
   cursor: pointer;
   padding: 5px;
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .card .card-content {
   position: relative;
   overflow: hidden;
   border-radius: 5px;
+  flex: 1;
 }
 
 .card .card-content img {
@@ -47,3 +50,22 @@
   font-size: 12px;
   height: 50px;
 }
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  background-color: #37383e;
+}
+
+/* @media screen and (min-width: 1280px) {
+  .image-placeholder {
+    height: 350px;
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  .image-placeholder {
+    height: 490px;
+  }
+} */
